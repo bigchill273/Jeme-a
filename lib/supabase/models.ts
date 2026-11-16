@@ -7,6 +7,7 @@ export interface Board {
   created_at: string;
   updated_at: string;
   totalTasks?: number;
+  role?: "owner" | "editor" | "viewer";
 }
 
 export interface Column {
@@ -32,4 +33,54 @@ export interface Task {
   priority: "low" | "medium" | "high";
   sort_order: number;
   created_at: string;
+  updated_at?: string;
+  comment_count?: number;
+}
+
+export interface BoardMember {
+  id: string;
+  board_id: string;
+  user_id: string;
+  role: "owner" | "editor" | "viewer";
+  invited_by: string | null;
+  created_at: string;
+  user_name?: string;
+  user_email?: string;
+  user_image_url?: string;
+}
+
+export interface BoardInvitation {
+  id: string;
+  board_id: string;
+  inviter_user_id: string;
+  invitee_email: string;
+  role: "editor" | "viewer";
+  status: "pending" | "accepted" | "declined";
+  created_at: string;
+  board_title?: string;
+  inviter_name?: string;
+}
+
+export interface ActivityLogEntry {
+  id: string;
+  board_id: string;
+  user_id: string;
+  user_name: string | null;
+  action: string;
+  entity_type: "board" | "column" | "task" | "member" | "comment";
+  entity_id: string | null;
+  entity_title: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface Comment {
+  id: string;
+  task_id: string;
+  board_id: string;
+  user_id: string;
+  user_name: string | null;
+  content: string;
+  created_at: string;
+  updated_at: string;
 }

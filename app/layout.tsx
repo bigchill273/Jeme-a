@@ -27,15 +27,14 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        baseTheme: undefined,
         variables: {
           colorPrimary: "#2563eb",
         },
       }}
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
-      afterSignInUrl="/dashboard"
-      afterSignUpUrl="/dashboard"
+      signInFallbackRedirectUrl="/dashboard"
+      signUpFallbackRedirectUrl="/dashboard"
     >
       <html lang="en">
         <body

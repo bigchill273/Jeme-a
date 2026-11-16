@@ -33,7 +33,7 @@ A modern project management tool inspired by Trello, built with Next.js, Supabas
 
 ### Technical Features
 - **TypeScript**: Full type safety throughout the application
-- **Server-Side Rendering**: Optimized performance with Next.js 15
+- **Server-Side Rendering**: Optimized performance with Next.js 16
 - **Database Integration**: Supabase for real-time data management
 - **Component Architecture**: Modular, reusable components with feature-based organization
 
@@ -77,6 +77,8 @@ Install dependencies
 npm install
 ```
 
+Next.js 16 requires Node.js 20.9.0 or newer.
+
 Setup Environment Variables
 
 Create a `.env` file in the root folder and add the following variables:
@@ -88,7 +90,7 @@ CLERK_SECRET_KEY=your_clerk_secret_key
 
 # Supabase Database
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SUPABASE__PUBLISHABLE_KEY=your_supabase_publishable_key
 ```
 
 Start the development server
@@ -102,7 +104,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Tech Stack
 
 ### Frontend
-- **[Next.js 15](https://nextjs.org/)** - React framework with App Router
+- **[Next.js 16](https://nextjs.org/)** - React framework with App Router
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[Shadcn UI](https://ui.shadcn.com/)** - Beautiful, accessible components

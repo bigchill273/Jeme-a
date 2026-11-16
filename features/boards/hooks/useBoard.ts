@@ -17,33 +17,45 @@ export function useBoard(boardId: string) {
 
   const [board, setBoard] = useState<Board | null>(null);
   const [columns, setColumns] = useState<ColumnWithTasks[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadedBoardId, setLoadedBoardId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<{
+    boardId: string;
+    message: string;
+  } | null>(null);
+  const loading = loadedBoardId !== boardId;
+  const displayError =
+    error ?? (loadError?.boardId === boardId ? loadError.message : null);
 
   useEffect(() => {
-    if (boardId && isLoaded && supabase) {
-      loadBoard();
-    }
-  }, [boardId, isLoaded]);
+    if (!boardId || !isLoaded || !supabase) return;
 
-  async function loadBoard() {
-    if (!boardId) return;
+    let isCurrent = true;
+    void boardDataService
+      .getBoardWithColumns(supabase, boardId)
+      .then((data) => {
+        if (!isCurrent) return;
+        setBoard(data.board);
+        setColumns(data.columnsWithTasks);
+        setError(null);
+        setLoadError(null);
+      })
+      .catch((err) => {
+        if (!isCurrent) return;
+        setLoadError({
+          boardId,
+          message:
+            err instanceof Error ? err.message : "Failed to load boards.",
+        });
+      })
+      .finally(() => {
+        if (isCurrent) setLoadedBoardId(boardId);
+      });
 
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await boardDataService.getBoardWithColumns(
-        supabase!,
-        boardId
-      );
-      setBoard(data.board);
-      setColumns(data.columnsWithTasks);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load boards.");
-    } finally {
-      setLoading(false);
-    }
-  }
+    return () => {
+      isCurrent = false;
+    };
+  }, [boardId, isLoaded, supabase]);
 
   async function updateBoard(boardId: string, updates: Partial<Board>) {
     try {
@@ -208,7 +220,7 @@ export function useBoard(boardId: string) {
     columns,
     setColumns,
     loading,
-    error,
+    error: displayError,
     updateBoard,
     createRealTask,
     moveTask,
